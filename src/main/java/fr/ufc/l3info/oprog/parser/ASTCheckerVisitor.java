@@ -40,27 +40,91 @@ public class ASTCheckerVisitor implements ASTNodeVisitor {
 
     @Override
     public Object visit(ASTStation n) {
+        String name = (String) n.getChild(0).accept(this);
+        if (stations.contains(name)) {
+            errors.put(n.getLCPrefix() + " Duplication de la station '"+name+"'"  , ERROR_KIND.DUPLICATE_STATION_NAME);
+        }
+        stations.add(name);
+
+        boolean haveCapacite = false;
+        boolean haveLatitude = false;
+        boolean haveLongitude = false;
+
+        for (int i = 1; i < n.getNumChildren(); ++i) {
+            String childName = (String) n.getChild(i).accept(this);
+
+            switch (childName) {
+                case "capacite": {
+                    if (haveCapacite) {
+                        errors.put(n.getChild(i).getLCPrefix()+" Duplication de la déclaration '"+childName+"'" , ERROR_KIND.DUPLICATE_DECLARATION);
+                    }
+                    haveCapacite = true;
+                    break;
+                }
+                case "latitude" : {
+                    if (haveLatitude) {
+                        errors.put(n.getChild(i).getLCPrefix()+" Duplication de la déclaration '"+childName+"'" , ERROR_KIND.DUPLICATE_DECLARATION);
+                    }
+                    haveLatitude = true;
+                    break;
+                }
+                case "longitude" : {
+                    if (haveLongitude) {
+                        errors.put(n.getChild(i).getLCPrefix()+" Duplication de la déclaration '"+childName+"'" , ERROR_KIND.DUPLICATE_DECLARATION);
+                    }
+                    haveLongitude = true;
+                    break;
+                }
+                default:
+                    assert(false);
+            }
+        }
+
+        if(!haveCapacite){
+            errors.put(n.getLCPrefix()+" Déclaration 'capacite' manquante",ERROR_KIND.MISSING_DECLARATION);
+        }
+        if(!haveLatitude){
+            errors.put(n.getLCPrefix()+" Déclaration 'latitude' manquante",ERROR_KIND.MISSING_DECLARATION);
+        }
+        if(!haveLongitude){
+            errors.put(n.getLCPrefix()+" Déclaration 'longitude' manquante",ERROR_KIND.MISSING_DECLARATION);
+        }
         return null;
     }
 
     @Override
     public Object visit(ASTDeclaration n) {
-        return null;
+        String key = (String) n.getChild(0).accept(this);
+        String value = (String) n.getChild(1).accept(this);
+
+        if (key.equals("capacite")) {
+            if (value.contains(".")) {
+                this.errors.put(n.getLCPrefix() + " La capacité doit être un entier", ERROR_KIND.WRONG_NUMBER_VALUE);
+            }else if (Double.parseDouble(value) <= 0) {
+                this.errors.put(n.getLCPrefix() + " La capacité doit être strictement positive", ERROR_KIND.WRONG_NUMBER_VALUE);
+            }
+        }
+        return key;
     }
 
     @Override
     public Object visit(ASTChaine n) {
-        return null;
+        String chaine = n.toString().substring(1,n.toString().length() - 1);
+
+        if(chaine.trim().length() == 0){
+            errors.put(n.getLCPrefix()+" La chaine est vide",ERROR_KIND.EMPTY_STATION_NAME);
+        }
+        return chaine;
     }
 
     @Override
     public Object visit(ASTIdentificateur n) {
-        return null;
+        return n.value;
     }
 
     @Override
     public Object visit(ASTNombre n){
-        return null;
+        return n.value;
     }
 }
 
