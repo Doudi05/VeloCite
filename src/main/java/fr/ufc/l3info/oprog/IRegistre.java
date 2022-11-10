@@ -56,5 +56,5 @@ public interface IRegistre {
      * @param v Le vélo emprunté
      * @return L'emprunteur courant du vélo passé en paramètre (null si le vélo n'est pas en cours d'emprunt)
      */
-    Abonne emprunteur(IVelo v);
+    //Abonne emprunteur(IVelo v);
 }
