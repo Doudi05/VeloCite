@@ -1,3 +1,2 @@
 # VeloCite
-AKEL Ward\n
-ROUX Ivann
+AKEL Ward - ROUX Ivann
