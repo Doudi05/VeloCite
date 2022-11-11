@@ -8,13 +8,13 @@ import java.util.Set;
 /**
  *  Classe implantant un registre simple en Java.
  */
-public class JRegistre implements IRegistre {
+public class JRegistreError implements IRegistre {
 
     private Map<Abonne, Set<Emprunt>> empruntsParAbonne;
     private Map<IVelo, Set<Emprunt>> empruntsParVelo;
     private Map<IVelo, Abonne> empruntsEnCours;
 
-    public JRegistre() {
+    public JRegistreError() {
         empruntsParAbonne = new HashMap<>();
         empruntsParVelo = new HashMap<>();
         empruntsEnCours = new HashMap<>();
@@ -56,22 +56,11 @@ public class JRegistre implements IRegistre {
         if (! empruntsEnCours.containsKey(v)) {
             return -2;
         }
-        
-        Emprunt emEnCours = null;
-        for (Emprunt em : empruntsParVelo.get(v)) {
-            if (em.estEnCours()) {
-                emEnCours = em;
-                break;
-            }
-        }
 
         if (empruntsParVelo.containsKey(v)) {
             for (Emprunt em : empruntsParVelo.get(v)) {
                 if (! em.estEnCours() && em.contientDate(d)) {
                     return -3;
-                }
-                if(! em.estEnCours() && emEnCours.debut < em.debut && d > em.fin) {
-                        return -3;
                 }
             }
         }
@@ -102,7 +91,7 @@ public class JRegistre implements IRegistre {
         return nb;
     }
 
-    @Override
+    /**@Override
     public double facturation(Abonne a, long debut, long fin) {
         double facture = 0.0;
         if (empruntsParAbonne.get(a) != null) {
@@ -110,6 +99,38 @@ public class JRegistre implements IRegistre {
                 if (e.finitEntre(debut, fin)) {
                     facture += e.cout();
                 }
+            }
+        }
+        return facture;
+    }*/
+
+    /**
+     * Fonction corrigée
+     */
+    @Override
+    public double facturation(Abonne a, long debut, long fin) {
+        double facture = 0.0;
+        int nbEmprunts = 0;
+        if (empruntsParAbonne.get(a) != null) {
+
+            for (Emprunt e : empruntsParAbonne.get(a)) {
+
+                if (e.finitEntre(debut, fin)) {
+
+                    if (e.fin - e.debut >= 5 * 60 * 1000 && nbEmprunts < 51) {
+                        ++nbEmprunts;
+                    }
+                    int reduction = (nbEmprunts / 10);
+                    if (nbEmprunts != 0 && nbEmprunts % 10 == 0) { // 10, 2O, 30...
+                        reduction -= 1;
+                    }
+
+                    double lower = (1 - Math.floor(reduction) / 10);
+                    double price = e.cout();
+                    facture += price * lower;
+
+                }
+
             }
         }
         return facture;
@@ -122,7 +143,6 @@ public class JRegistre implements IRegistre {
         }
         return null;
     }
-
 
     private class Emprunt {
 
@@ -160,10 +180,6 @@ public class JRegistre implements IRegistre {
             return d >= debut && (enCours || d <= fin);
         }
 
-        public boolean includes(long d1, long d2) {
-            return debut >= d1 && fin <= d2;
-        }
-
         public boolean finitEntre(long d, long f) {
             return fin >= d && fin <= f;
         }
@@ -176,6 +192,4 @@ public class JRegistre implements IRegistre {
             return (velo.tarif() * nbMin) / 60;
         }
     }
-
 }
-

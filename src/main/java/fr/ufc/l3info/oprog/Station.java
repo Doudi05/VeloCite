@@ -97,12 +97,12 @@ public class Station {
             return -3;
         }
 
-        /*if(v.estAbime()){
+        if(v.estAbime()){
             Abonne casseur = registre.emprunteur(v);
             if(casseur != null){
                 casseur.bloquer();
             }
-        }*/
+        }
 
         if (this.registre.retourner(v, maintenant()) != 0) {
             this.velos[b - 1] = v;
