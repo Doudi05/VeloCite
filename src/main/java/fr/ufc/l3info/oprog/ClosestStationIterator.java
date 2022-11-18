@@ -7,7 +7,7 @@ public class ClosestStationIterator implements Iterator<Station>{
     private Set<Station> stations;
 
     public ClosestStationIterator(Set<Station> stations, Station s){
-        if (stations == null || s == null){
+        if (stations == null || s == null || !stations.contains(s)){
             this.stations = new HashSet<>();
             this.station = null;
             return;

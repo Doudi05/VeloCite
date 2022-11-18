@@ -25,7 +25,6 @@ public class Ville implements Iterable<Station>{
     void initialiser(File f) throws IOException {
         StationParser parser = StationParser.getInstance();
         this.stations.clear();
-
         try {
             ASTNode n = parser.parse(f);
             ASTStationBuilder builder = new ASTStationBuilder();
@@ -36,24 +35,25 @@ public class Ville implements Iterable<Station>{
 
             for (Station s : builder.getStations()) {
                 s.setRegistre(this.registre);
-                this.stations.put(s.getNom(), s);
+                stations.put(s.getNom(), s);
                 if (s.getNom().equals(nomStation)) {
-                    this.stationPrincipal = s;
+                    this.setStationPrincipale(s);
                 }
             }
         } catch (StationParserException e) {
-            throw new RuntimeException(e);
+            //throw new RuntimeException(e);
         }
-        System.out.println(this.stationPrincipal.getNom());
+        //System.out.println(this.stationPrincipal.getNom());
     }
 
-    void setStationPrincipale(String st){
-        if (st != null && stations.containsKey(st)){
-            this.stationPrincipal = stations.get(st);
+    void setStationPrincipale(Station st){
+        if (st != null && this.stations.get(st.getNom()) != null) {
+            this.stationPrincipal = st;
         }
     }
 
     Station getStation(String nom){
+
         return this.stations.get(nom);
     }
 
@@ -61,7 +61,7 @@ public class Ville implements Iterable<Station>{
         Station station = new Station("station", lat, lon, 0);
 
         Station s1 = this.stationPrincipal;
-        double distance = station.distance(s1);
+        double distance = station.distance(this.stationPrincipal);
 
         for (Station s2 : this.stations.values()){
             double d = station.distance(s2);
@@ -86,17 +86,17 @@ public class Ville implements Iterable<Station>{
 
     @Override
     public Iterator<Station> iterator() {
-        return new ClosestStationIterator((Set<Station>) this.stations.values(), this.stationPrincipal);
+        return new ClosestStationIterator(new HashSet<>(this.stations.values()), this.stationPrincipal);
     }
 
     Map<Abonne, Double> facturation(int mois, int annee){
         long start = 0;
         long end = 0;
-        if (mois < 1 || mois > 12){
+        if (mois >= 1 && mois <= 12){
             Date date = new Date(annee - 1900, mois - 1, 1);
             start = date.getTime();
             if (mois == 12) {
-                mois = 0;
+                mois = 1;
                 annee++;
             } else {
                 mois++;
