@@ -42,8 +42,6 @@ public class VilleTest {
     public void initialiser_bonOrdre() {
         assertTrue(ville.iterator().hasNext());
         String[] stations = {   "Gare Viotte",
-                "Place Flore",
-                "Place de la Liberté",
                 "Square Bouchot",
                 "Isembart",
                 "Beaux Arts",
@@ -51,18 +49,6 @@ public class VilleTest {
                 "Bersot",
                 "Morand",
                 "8 Septembre",
-                "Mairie",
-                "Saint Jacques",
-                "Gare d'Eau",
-                "Beauregard",
-                "Déportés",
-                "Rivotte",
-                "Jacobins",
-                "Victor Hugo",
-                "Jean Cornet",
-                "Tassigny",
-                "Gare de la Mouillère",
-                "Office de tourisme",
                 "Révolution",
                 "Madeleine",
                 "Marulaz",
@@ -70,8 +56,21 @@ public class VilleTest {
                 "Place Leclerc",
                 "Xavier Marmier",
                 "La City",
+                "Saint Jacques",
+                "Mairie",
                 "Granvelle",
-                "Gare Viotte"
+                "Victor Hugo",
+                "Jean Cornet",
+                "Tassigny",
+                "Gare de la Mouillère",
+                "Office de tourisme",
+                "Place Flore",
+                "Place de la Liberté",
+                "Jacobins",
+                "Rivotte",
+                "Déportés",
+                "Beauregard",
+                "Gare d'Eau"
         };
         int i = 0;
         for (Station s : ville) {
@@ -80,7 +79,6 @@ public class VilleTest {
             i++;
         }
         assertEquals( 30,i);
-
     }
 
     @Test
@@ -102,27 +100,17 @@ public class VilleTest {
         ville.setStationPrincipale(ville.getStation("8 Septembre"));
         String [] stations = {  "8 Septembre",
                 "Morand",
-                "Bersot",
                 "Médiathèque",
+                "Bersot",
+                "Tassigny",
+                "Gare de la Mouillère",
+                "Office de tourisme",
                 "Beaux Arts",
                 "Isembart",
                 "Square Bouchot",
                 "Gare Viotte",
                 "Place Flore",
                 "Place de la Liberté",
-                "Office de tourisme",
-                "Gare de la Mouillère",
-                "Tassigny",
-                "Jean Cornet",
-                "Victor Hugo",
-                "Jacobins",
-                "Rivotte",
-                "Déportés",
-                "Beauregard",
-                "Gare d'Eau",
-                "Saint Jacques",
-                "Mairie",
-                "Granvelle",
                 "Révolution",
                 "Madeleine",
                 "Marulaz",
@@ -130,6 +118,16 @@ public class VilleTest {
                 "Place Leclerc",
                 "Xavier Marmier",
                 "La City",
+                "Saint Jacques",
+                "Mairie",
+                "Granvelle",
+                "Victor Hugo",
+                "Jean Cornet",
+                "Jacobins",
+                "Rivotte",
+                "Déportés",
+                "Beauregard",
+                "Gare d'Eau"
         };
 
         int i = 0;
@@ -138,7 +136,7 @@ public class VilleTest {
             assertEquals(s.getNom(),stations[i]);
             i++;
         }
-        assertEquals(30,i);
+        assertEquals( 30,i);
     }
 
     @Test

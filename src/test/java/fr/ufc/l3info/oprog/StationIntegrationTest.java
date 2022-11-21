@@ -199,7 +199,7 @@ public class StationIntegrationTest {
     @Test
     public void distance() {
         Station other = new Station("Kyoto", 35.011636, 135.768029, 5);
-        assertEquals(963.985,station.distance(other),10);
+        assertEquals(9589.796,station.distance(other),10);
     }
 
     @Test
@@ -984,10 +984,51 @@ public class StationIntegrationTest {
 
     @Test
     public void testDistance_Success() {
-        Station s1 = new Station("Station Gare Viotte", 47.246501551427329, 6.022715427111734, 10);
+        Station s1 = new Station("Station gare Viotte", 47.246501551427329, 6.022715427111734, 10);
         Station s2 = new Station("Station Rivotte", 47.232117826784354, 6.035021926715934, 20);
 
-        Assert.assertEquals(0.242, s1.distance(s2), 0.01);
+        Assert.assertEquals(1.850, s1.distance(s2), 0.01);
+    }
+
+    @Test
+    public void testEmprunterVelo_Empty_RegOk_AbOk() throws IncorrectNameException {
+        IRegistre reg = new JRegistre();
+        this.s.setRegistre(reg);
+        Abonne a = new Abonne("Donald", "12345-98765-12345678912-21");
+
+        Assert.assertNull(this.s.emprunterVelo(a, 1));
+    }
+
+    @Test
+    public void testEmprunterVelo_NotEmpty_RegOk_AbOk_Out() throws IncorrectNameException {
+        this.addBikes(this.CAPACITY);
+        Abonne a = new Abonne("Donald", "12345-98765-12345678912-21");
+
+        Assert.assertNotNull(this.s.emprunterVelo(a, 1));
+    }
+
+    @Test
+    public void testEmprunterVelo_Empty_RegKo_AbNull() {
+        Assert.assertNull(this.s.emprunterVelo(null, 1));
+    }
+
+    @Test
+    public void testEmprunterVelo_MultipleBorrows() throws IncorrectNameException {
+        this.addBikes(this.CAPACITY);
+        IRegistre reg = new JRegistre();
+        this.s.setRegistre(reg);
+
+        Abonne a = new Abonne("Donald", "12345-98765-12345678912-21");
+        this.s.emprunterVelo(a, 2);
+
+        Assert.assertNull(this.s.emprunterVelo(a, 1));
+    }
+
+    @Test
+    public void testEmprunterVelo_NotEmpty_RegKO_AbOk() throws IncorrectNameException {
+        Abonne a = new Abonne("Donald", "12345-98765-12345678912-21");
+
+        Assert.assertNull(this.s.emprunterVelo(a, 1));
     }
 
     @Test

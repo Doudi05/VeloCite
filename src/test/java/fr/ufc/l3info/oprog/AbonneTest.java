@@ -79,13 +79,13 @@ public class AbonneTest {
         assertTrue(a.estBloque());
     }
 
-    /*@Test
+    @Test
     public void RibNull() throws IncorrectNameException {
-        Abonne a = new Abonne("user1");
+        Abonne a = new Abonne("Ward");
         assertTrue(a.estBloque());
         a.miseAJourRIB(null);
         assertTrue(a.estBloque());
-    }*/
+    }
 
     @Test
     public void Id() throws IncorrectNameException{

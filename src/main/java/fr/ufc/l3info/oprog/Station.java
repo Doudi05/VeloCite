@@ -137,20 +137,24 @@ public class Station {
         }
     }
 
-    public double distance(Station s){
+    public double distance(Station s) {
         if(s == null){
             return 0;
         }
-        double r = 631e3;
-        double pi1 = this.latitude * Math.PI/180;
-        double pi2 = s.latitude * Math.PI/180;
-        double delta1 = (s.latitude - this.latitude) * Math.PI/180;
-        double delta2 = (s.longitude - this.longitude) * Math.PI/180;
+        double r = 6371e3;
+        double pi1 = this.latitude * Math.PI / 180;
+        double pi2 = s.latitude * Math.PI / 180;
+        double delta1 = (s.latitude - this.latitude) * Math.PI / 180;
+        double delta2 = (s.longitude - this.longitude) * Math.PI / 180;
 
-        double a = Math.sin(delta1/2) * Math.sin(delta1) + Math.cos(pi1) * Math.cos(pi2) * Math.sin(delta2/2) * Math.sin(delta2/2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        double a = Math.sin(delta1 / 2) * Math.sin(delta1 / 2) +
+                Math.cos(pi1) * Math.cos(pi2) *
+                        Math.sin(delta2 / 2) * Math.sin(delta2 / 2);
+
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
         return Math.round(r * c) / 1000.0;
+
     }
 
     public long maintenant(){
