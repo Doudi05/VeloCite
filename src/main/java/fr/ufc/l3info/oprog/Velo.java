@@ -13,11 +13,11 @@ public class Velo implements IVelo{
     private double kilometrage;
     private double kmDerniereRevision;
 
-    public Velo(){
+    protected Velo(){
         this('m');
     }
 
-    public Velo(char t){
+    protected Velo(char t){
         this.kilometrage = 0;
         this.estAbime = false;
         this.estDecroche = true;
