@@ -22,6 +22,7 @@ public class Ville implements Iterable<Station>{
         this.registre = new JRegistre();
     }
 
+    //initialiser l'ensemble des stations de la ville à partir du fichier de description passé en paramètre
     void initialiser(File f) throws IOException {
         StationParser parser = StationParser.getInstance();
         this.stations.clear();
@@ -37,18 +38,17 @@ public class Ville implements Iterable<Station>{
                 s.setRegistre(this.registre);
                 stations.put(s.getNom(), s);
                 if (s.getNom().equals(nomStation)) {
-                    this.setStationPrincipale(s);
+                    this.stationPrincipal = s;
                 }
             }
-        } catch (StationParserException e) {
-            //throw new RuntimeException(e);
-        }
-        //System.out.println(this.stationPrincipal.getNom());
+        } catch (StationParserException e) {}
     }
 
-    void setStationPrincipale(Station st){
-        if (st != null && this.stations.get(st.getNom()) != null) {
-            this.stationPrincipal = st;
+    void setStationPrincipale(String st) {
+        for (Station s : stations.values()) {
+            if (s.getNom().equals(st)) {
+                this.stationPrincipal = s;
+            }
         }
     }
 

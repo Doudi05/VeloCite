@@ -90,14 +90,14 @@ public class VilleTest {
 
     @Test
     public void setStationPrincipale_null(){
-        ville.setStationPrincipale(ville.getStation("Bersot"));
+        ville.setStationPrincipale("Bersot");
         ville.setStationPrincipale(null);
         assertEquals("Bersot",ville.iterator().next().getNom());
     }
 
     @Test
     public void stationPrincipaleChoisie(){
-        ville.setStationPrincipale(ville.getStation("8 Septembre"));
+        ville.setStationPrincipale("8 Septembre");
         String [] stations = {  "8 Septembre",
                 "Morand",
                 "Médiathèque",
